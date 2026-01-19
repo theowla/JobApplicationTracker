@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+<script>
+
+    const labels = ["Denied", "Approved", "Pending"];
+    const values = [
+        {{ count_denied }},
+        {{ count_aproved }},
+        {{ count_pending }}
+    ];
+
+    // bar chart configuration
+    window.onload = function () {
+        new Chart(document.getElementById("myChart"), {
+            type: "bar",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Applications",
+                    data: values,
+                    backgroundColor: "#5C8374",
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    // line chart configuration
+
+        
+    };
+
+</script>
+
+<section>
+    <h1>Charts</h1>
+    <canvas id="myChart" style="height:50vh; max-width:40vw"></canvas>
+</section>
+<section>
+    <h1>List of applications</h1>
+    <table class="content-table">
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th>Role Title</th>
+                <th>Update Date</th>
+                <th>State</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products reversed %}
+            <tr>
+                <td>{{ product.company }}</td>
+                <td>{{ product.role_title }}</td>
+                <td>{{ product.updated_at }}</td>
+                <td>{{ product.state }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No applications found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% endblock %}
